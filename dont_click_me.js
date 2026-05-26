@@ -1,22 +1,17 @@
 // =========================================================================
-// 1. THE SETUP FUNCTION (The "Birth Ceremony" of your program)
-// This code runs exactly ONCE at the very beginning when you click 'Play'.
+// THE CHAOS FACE
+// Uses direct numbers and basic math. No complex map() tracking!
 // =========================================================================
+
 function setup() {
   // createCanvas(Width, Height) in pixels.
-  // This buys a square digital sketchpad.
-  // REMEMBER: (0,0) is the top-left corner of the screen!
+  // This sets up a square drawing board. (0,0) is the top-left corner!
   createCanvas(600, 600);
 }
 
-// =========================================================================
-// 2. THE DRAW FUNCTION (The Infinite Flipbook)
-// This code loops over and over again, 60 times every single second!
-// =========================================================================
 function draw() {
   // background(Red, Green, Blue) -> Values go from 0 to 255.
-  // This acts as a digital eraser, painting the canvas a deep midnight blue 
-  // at the start of every single frame so the old drawings are wiped away.
+  // This wipes the canvas with midnight blue 60 times a second so animations stay clean.
   background(20, 30, 50);
   
   // -----------------------------------------------------------------------
@@ -24,7 +19,7 @@ function draw() {
   // -----------------------------------------------------------------------
   stroke(255);          // Pick up a white marker for the outline (255 = max white)
   strokeWeight(5);      // Press down hard! Makes the outline 5 pixels thick and cartoony
-  fill(255, 204, 0);    // Dip your paintbrush into bright yellow ink (Max Red, High Green, No Blue)
+  fill(255, 204, 0);    // Paintbrush color: Bright yellow (Max Red, High Green, No Blue)
   
   // ellipse(X_Center, Y_Center, Width, Height)
   // Placing the center at (300, 300) puts this 350-pixel circle dead-center.
@@ -42,27 +37,30 @@ function draw() {
   ellipse(370, 260, 60, 60);
   
   // -----------------------------------------------------------------------
-  // THE MAGIC PUPILS (The tracking system!)
+  // THE PUPIL TRACKING SYSTEM (Simple Division!)
   // mouseX and mouseY constantly track where your computer cursor is.
-  // map() is a translator: It takes the giant screen size (0 to 600) 
-  // and shrinks the movement down proportionally to fit a tiny window (-15 to 15).
-  // This keeps the black pupils from flying completely out of the eyeballs!
+  // Instead of map(), we just divide the mouse positions by 40.
+  // This scales down the movement so the black pupils stay inside the eyes!
   // -----------------------------------------------------------------------
-  let pupilX = map(mouseX, 0, width, -15, 15);
-  let pupilY = map(mouseY, 0, height, -15, 15);
+  let shiftX = mouseX / 40;
+  let shiftY = mouseY / 40;
   
   fill(0);              // Change the paintbrush to pitch black for the pupils
+  noStroke();           // Pupils look cleaner without an extra outline
   
   // Draw Left Pupil: Anchored at center (230, 260) but shifts with the mouse offset
-  ellipse(230 + pupilX, 260 + pupilY, 20, 20);
+  ellipse(230 + shiftX, 260 + shiftY, 20, 20);
   
   // Draw Right Pupil: Anchored at center (370, 260) but shifts with the mouse offset
-  ellipse(370 + pupilX, 260 + pupilY, 20, 20);
+  ellipse(370 + shiftX, 260 + shiftY, 20, 20);
 
   // -----------------------------------------------------------------------
-  // THE "CHOOSE YOUR OWN ADVENTURE" MOUTH (Conditionals)
+  // THE MOUTH (Conditionals: If / Else)
   // We ask the computer a question: Is the user clicking down on the mouse?
   // -----------------------------------------------------------------------
+  stroke(40);           // Turn borders back on for the mouth expressions
+  strokeWeight(4);
+  
   if (mouseIsPressed) {
     // [IF THE MOUSE IS CLICKED: SCREAM MODE!]
     fill(200, 50, 50);  // Change paintbrush to an angry, bloody red
@@ -82,11 +80,11 @@ function draw() {
     fill(0);            // Change paintbrush back to black
     
     // The random(min, max) function rolls a digital dice 60 times a second.
-    // It picks a chaotic, unpredictable number between 40 and 120 pixels.
-    // We save that crazy shifting number inside a box called 'mouthWidth'.
+    // It picks a chaotic, unpredictable number between 40 and 120 pixels wide.
+    // We save that crazy shifting number inside a variable called 'mouthWidth'.
     let mouthWidth = random(40, 120); 
     
-    // Draw a flat, nervous mouth that twitches violently because its width keeps changing!
+    // Draw a flat mouth that twitches violently because its width keeps changing!
     ellipse(300, 390, mouthWidth, 30);
   }
 }
