@@ -1,105 +1,131 @@
 // =========================================================================
-// THE SIMPLIFIED ANIME CHARACTER
-// Uses only basic shapes and direct mouse tracking. No complex math!
+// THE CYBERPUNK ANIME CHARACTER
 // =========================================================================
 
 function setup() {
-  // Create our 600x600 drawing board
+  // Sets up our square 600x600 digital drawing board.
+  // REMEMBER THE GRID: X runs left-to-right (0 to 600)
+  //           Y runs top-to-bottom (0 to 600)
   createCanvas(600, 600);
 }
 
 function draw() {
-  // Light purple/blue background tint
-  background(230, 235, 255);
+  // THE BACKGROUND: We pick a deep, cool dark-navy color.
+  // Using a dark background makes any bright or neon shapes we draw on top 
+  // look like they are glowing like a smartphone screen in a dark room.
+  background(15, 20, 30);
   
   // -----------------------------------------------------------------------
-  // 1. THE BACK HAIR (Drawn first so it sits behind the head)
+  // PART 1: THE HAIR (Layered FIRST so it sits behind the head)
   // -----------------------------------------------------------------------
-  noStroke();
-  fill(200, 100, 200); // Solid purple hair color
+  noStroke();          // Turn off outlines so the hair looks smooth and solid
+  fill(0, 230, 180);   // Dip our paintbrush into a bright neon teal ink
   
-  // Two long rectangles for the back hair strands
-  rect(150, 200, 80, 300); // Left side back hair
-  rect(370, 200, 80, 300); // Right side back hair
+  // DRAW THE BACK HAIR: Two long rectangles dropped behind the shoulders. 
+  // The 5th number (10) curves the bottom edges slightly to look like hair tips.
+  // rect(X, Y, Width, Height, CornerRadius)
+  rect(150, 200, 80, 300, 10); // Left hair strand
+  rect(370, 200, 80, 300, 10); // Right hair strand
+  
+  // THE MOVING HAIR SPIKES: The tips of the hair grow based on the mouse position!
+  // It starts at 220 pixels high, and as you move your mouse to the right (mouseX grows), 
+  // the hair spikes stretch downward. We divide by 6 so it moves smoothly.
+  let spikeDrop = 220 + mouseX / 6; 
+  
+  // Draw 4 downward-pointing triangles to look like sharp anime bangs.
+  // triangle(X1, Y1, X2, Y2, X3, Y3)
+  // The third set of numbers controls the very tip of each spike!
+  triangle(160, 150, 240, 150, 200, spikeDrop);       // Left-side spike
+  triangle(230, 140, 310, 140, 270, spikeDrop + 20);  // Middle-left spike (longer)
+  triangle(300, 140, 380, 140, 340, spikeDrop + 20);  // Middle-right spike (longer)
+  triangle(360, 150, 440, 150, 400, spikeDrop);       // Right-side spike
 
   // -----------------------------------------------------------------------
-  // 2. THE HEAD & CHIN
+  // PART 2: THE FACE BASE (Building the head and jaw)
   // -----------------------------------------------------------------------
-  stroke(40);
-  strokeWeight(4);
-  fill(255, 230, 210); // Skin color
+  stroke(255, 50);     // Pick a white marker for outlines, but make it mostly see-through (50)
+  strokeWeight(3);     // Set the thickness of our outline marker to 3 pixels
+  fill(25, 35, 50);    // Choose a cool, robotic dark-slate color for the skin
   
-  // Main round head
-  ellipse(300, 280, 260, 260);
+  // Draw a big round circle for the main skull shape
+  ellipse(300, 280, 260, 260); 
   
-  // Pointy anime chin (Triangle pointing down)
-  // Corner 1: Left cheek (175, 320), Corner 2: Right cheek (425, 320), Corner 3: Chin tip (300, 430)
-  triangle(175, 320, 425, 320, 300, 430);
+  // Draw an upside-down triangle to act as the sharp, pointy anime chin.
+  // Point 1 is left cheek (175, 320), Point 2 is right cheek (425, 320), Point 3 is chin tip (300, 430)
+  triangle(175, 320, 425, 320, 300, 430); 
   
-  // Quick fix: Hide the inside line of the triangle with a small skin-colored rectangle
+  // THE COVER-UP TRICK: Fusing the circle and triangle leaves an ugly line 
+  // cutting straight across the middle of the face. We turn off lines (noStroke) and slap a 
+  // skin-colored rectangle over that line to make the face look like one seamless piece.
   noStroke();
   rect(177, 280, 246, 50);
 
   // -----------------------------------------------------------------------
-  // 3. THE EXPRESSIVE ANIME EYES (They follow the mouse directly!)
+  // PART 3: THE SCI-FI ANIME EYES (They track your mouse!)
   // -----------------------------------------------------------------------
-  stroke(40);
-  strokeWeight(5);
-  fill(255); // White eye bases
+  stroke(0, 230, 180); // Choose a bright neon teal marker for the eye frames
+  strokeWeight(4);     // Make the eyeliner borders thick and bold
+  fill(10, 15, 25);    // Paint the inside of the eyes pitch black
   
-  // Draw left and right eye outlines
-  rect(190, 250, 70, 60, 15);
-  rect(340, 250, 70, 60, 15);
+  // Draw two wide rectangles with rounded corners (15) to make cyber eye goggles
+  rect(190, 250, 75, 60, 15);  // Left eye frame
+  rect(335, 250, 75, 60, 15);  // Right eye frame
   
-  // THE PUPILS: We use mouseX and mouseY but divide them by 40 
-  // so the pupils shift gently instead of flying off the face!
-  let shiftX = mouseX / 40;
-  let shiftY = mouseY / 40;
+  // THE EYE-TRACKING ENGINE: We track where your real computer mouse is.
+  // We divide mouseX and mouseY by 35 so the inner pupils move gently 
+  // in tiny steps instead of flying completely out of the eye frame!
+  let shiftX = mouseX / 35;
+  let shiftY = mouseY / 35;
   
-  noStroke();
-  fill(255, 50, 100); // Bright pink pupils
+  noStroke(); // Turn off borders so the glowing pupils look like pure energy
   
-  // Large anime pupils that slide around with the mouse shift
-  ellipse(210 + shiftX, 270 + shiftY, 35, 45); // Left pupil
-  ellipse(360 + shiftX, 270 + shiftY, 35, 45); // Right pupil
-  
-  // White eye twinkles/shines that stay glued to the pupils
-  fill(255);
-  ellipse(215 + shiftX, 265 + shiftY, 10, 10);
-  ellipse(365 + shiftX, 265 + shiftY, 10, 10);
-
-  // -----------------------------------------------------------------------
-  // 4. FACE DETAILS (Eyebrows, Nose, Mouth)
-  // -----------------------------------------------------------------------
-  stroke(40);
-  strokeWeight(4);
-  
-  // Flat, simple eyebrows
-  line(185, 230, 245, 235);
-  line(415, 230, 355, 235);
-  
-  // A tiny dot for a nose
-  point(300, 340);
-  
-  // Simple interactive mouth:
-  // If the user presses the mouse, it becomes a giant screaming open mouth!
-  // Otherwise, it is just a simple resting flat line.
+  // THE ACTION TRIGGER: What happens when the player clicks down?
   if (mouseIsPressed) {
-    fill(255, 100, 100); // Red inside mouth
-    ellipse(300, 380, 40, 60);
+    // [STATE 1: THE LASER ATTACK MODE!]
+    fill(255, 0, 100, 80); // Pick a hot pink color, but make it translucent/glassy (80)
+    
+    // Draw two giant vertical laser rectangles shooting straight down off the screen.
+    // They are glued to the pupils, so the lasers aim wherever you look!
+    rect(205 + shiftX, 265 + shiftY, 15, 400); // Left laser beam
+    rect(350 + shiftX, 265 + shiftY, 15, 400); // Right laser beam
+    
+    // Draw a super-bright solid center core inside the eyes
+    fill(255, 50, 120); 
+    ellipse(212 + shiftX, 277 + shiftY, 25, 35); // Left active pupil
+    ellipse(357 + shiftX, 277 + shiftY, 25, 35); // Right active pupil
+    
   } else {
-    line(285, 380, 315, 380); // Neutral mouth line
+    // [STATE 2: NORMAL IDLE MODE]
+    // If the mouse is NOT clicked, just draw friendly, glowing neon pink pupils.
+    fill(255, 0, 100); 
+    ellipse(212 + shiftX, 277 + shiftY, 25, 35); // Left resting pupil
+    ellipse(357 + shiftX, 277 + shiftY, 25, 35); // Right resting pupil
   }
+  
+  // THE EYE TWINKLE: Classic glossy animation shine reflections.
+  // These small white circles sit on top and use the same 'shift' numbers, 
+  // making sure the glossy lens reflection stays locked onto the pupils as they look around!
+  fill(255);
+  ellipse(217 + shiftX, 270 + shiftY, 8, 8); // Left eye shine
+  ellipse(362 + shiftX, 270 + shiftY, 8, 8); // Right eye shine
 
   // -----------------------------------------------------------------------
-  // 5. THE FRONT HAIR SPIKES (Drawn last to sit on top of the face)
+  // PART 4: THE EXPRESSION & THE GLITCH MOUTH
   // -----------------------------------------------------------------------
-  noStroke();
-  fill(200, 100, 200); // Match back hair color
+  stroke(255, 0, 100); // Match the mouth/eyebrow lines to the neon pink pupils
+  strokeWeight(4);     // Give them a bold, sharp presence
   
-  // Three giant downward triangles for classic anime bangs
-  triangle(160, 160, 240, 160, 200, 260); // Left hair spike
-  triangle(230, 150, 310, 150, 270, 280); // Middle hair spike
-  triangle(300, 150, 380, 150, 340, 280); // Right hair spike
-  triangle(360, 160, 440, 160, 400, 260); // Far right hair spike
+  // Two angled lines pointing downward toward the center to show a focused or serious look
+  line(185, 235, 245, 240); // Left eyebrow
+  line(415, 235, 355, 240); // Right eyebrow
+  
+  // THE GLITCH ENGINE: The mouth isn't a normal smile—it's a computer glitch!
+  // Every frame, the computer rolls a random dice between -5 and +5 pixels.
+  let mouthJitter = random(-5, 5); 
+  
+  // Draw 3 horizontal lines that shake up and down at different speeds.
+  // It makes the mouth look like an audio speaker wave or a glowing neon soundbar!
+  line(285, 380 + mouthJitter, 315, 380 + mouthJitter);             // Center mouth line
+  line(290, 385 + mouthJitter * 0.5, 310, 385 + mouthJitter * 0.5); // Bottom vibration line
+  line(295, 375 + mouthJitter * 1.5, 305, 375 + mouthJitter * 1.5); // Top vibration line
 }
