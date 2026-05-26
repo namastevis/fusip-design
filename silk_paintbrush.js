@@ -1,5 +1,5 @@
 // =========================================================================
-// THE DIGITAL SILK PAINTBRUSH
+// THE MASTER DIGITAL SILK PAINTBRUSH (All 3 Size Hacks Included!)
 // Move your mouse slowly to paint smooth silk ribbons.
 // Press any keyboard key to completely clear your canvas and start over!
 // =========================================================================
@@ -14,47 +14,61 @@ function setup() {
 
 function draw() {
   // -----------------------------------------------------------------------
-  // THE GENERATIVE ART SECRET:
-  // Notice that we DO NOT call background() here anymore!
-  // Because we don't erase the screen, every shape we draw stays forever,
-  // layering on top of the old ones to create a complex piece of art.
+  // CHOOSE A BRUSH SIZE HACK (Uncomment ONLY ONE option below to test!)
   // -----------------------------------------------------------------------
   
-  // 1. CHOOSE A COLOR THAT CHANGES WITH THE MOUSE
+  // DEFAULT OPTION: Fixed, predictable size
+  let brushSize = 40;
+  
+  // --- HACK 1: THE ORGANIC SPEED BRUSH ---
+  // (Reacts to how fast you flick your mouse. Thin when slow, thick when fast!)
+  // let mouseSpeed = abs(mouseX - pmouseX); // Speed = distance since last frame
+  // brushSize = 10 + mouseSpeed * 2;   // Minimum size of 10 + speed modifier
+  
+  // --- HACK 2: THE BREATHING WAVE BRUSH ---
+  // (Uses math waves to smoothly shrink and grow from 10 to 60 pixels automatically)
+  // brushSize = 35 + sin(frameCount * 0.05) * 25;
+  
+  // --- HACK 3: THE CHAOTIC SPRAY BRUSH ---
+  // (Picks a totally chaotic, completely unpredictable size every millisecond)
+  // brushSize = random(5, 80);
+
+  // -----------------------------------------------------------------------
+  // CHOOSE A COLOR THAT CHANGES WITH THE MOUSE
+  // -----------------------------------------------------------------------
   // As you move right (mouseX grows), the red channel increases.
   // As you move down (mouseY grows), the blue channel increases.
-  // This gives the user an automatic, interactive rainbow brush!
   let brushRed = mouseX / 3; 
   let brushBlue = mouseY / 2;
   
   // fill(Red, Green, Blue, Opacity)
-  // Keeping opacity ultra-low (15) means the paint is mostly see-through.
-  // The colors only look bright and solid when you draw over the same spot twice!
+  // Keeping opacity ultra-low (15) means the paint layers beautifully over time.
   fill(brushRed, 100, brushBlue, 15);
   
   // Draw a very soft, thin white border around our brush shapes
   stroke(255, 30); 
   strokeWeight(1);
 
-  // 2. THE MIRROR EXTRAVAGANZA (Symmetry Art)
-  // Instead of drawing just one circle, we draw four circles at the same time
-  // in mirrored positions. This instantly turns simple doodles into gorgeous symmetry art!
+  // -----------------------------------------------------------------------
+  // THE MIRROR EXTRAVAGANZA (Symmetry Art)
+  // -----------------------------------------------------------------------
+  // Top-Left Brush (Tracks your actual mouse cursor)
+  ellipse(mouseX, mouseY, brushSize, brushSize);
   
-  // Top-Left Brush (Tracks your actual mouse)
-  ellipse(mouseX, mouseY, 40, 40);
+  // Top-Right Brush (Mirrors you horizontally across the center)
+  ellipse(width - mouseX, mouseY, brushSize, brushSize);
   
-  // Top-Right Brush (Mirrors you horizontally)
-  ellipse(width - mouseX, mouseY, 40, 40);
-  
-  // Bottom-Left Brush (Mirrors you vertically)
-  ellipse(mouseX, height - mouseY, 40, 40);
+  // Bottom-Left Brush (Mirrors you vertically across the center)
+  ellipse(mouseX, height - mouseY, brushSize, brushSize);
   
   // Bottom-Right Brush (Perfect diagonal mirror)
-  ellipse(width - mouseX, height - mouseY, 40, 40);
+  ellipse(width - mouseX, height - mouseY, brushSize, brushSize);
 }
 
-// 3. THE RESET BUTTON
-// If their canvas gets too messy, they can tap any key to wash the canvas clean.
+// -----------------------------------------------------------------------
+// THE RESET BUTTON
+// If your canvas gets too messy, tap any key to wash the canvas clean.
+// -----------------------------------------------------------------------
 function keyPressed() {
   background(10, 15, 25);
 }
